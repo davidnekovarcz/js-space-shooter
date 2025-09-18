@@ -41,7 +41,7 @@ class Game {
         this.explosions = [];
         this.keys = {};
         this.score = 0;
-        this.level = 1;
+        this.level = 0;
         this.isGameOver = false;
         this.lastShot = 0;  // Track last shot time
         this.shootCooldown = 100; // 10 shots per second (1000ms / 10)
