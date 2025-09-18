@@ -1,6 +1,6 @@
 # 🚀 Space Shooter
 
-A thrilling 3D space shooter game built with Three.js! Pilot your spaceship through asteroid fields, destroy enemies, and achieve the highest score possible.
+A thrilling 2D space shooter game built with Three.js! Pilot your spaceship through asteroid fields, destroy enemies, and achieve the highest score possible.
 
 ## 🎮 How to Play
 
@@ -28,7 +28,7 @@ A thrilling 3D space shooter game built with Three.js! Pilot your spaceship thro
 - **High Score**: Track your best performance
 
 ## 🛠️ Technology Stack
-- **Three.js**: 3D graphics and WebGL rendering
+- **Three.js**: 2D graphics and WebGL rendering
 - **Vanilla JavaScript**: Pure JS game logic
 - **Web Audio API**: Sound effects and audio
 - **Express.js**: Server for Heroku deployment
@@ -94,7 +94,7 @@ SpaceShooter/
 - **Background Ambience**: Space atmosphere
 
 ## 🎨 Visual Features
-- **3D Graphics**: Immersive space environment
+- **2D Graphics**: Immersive space environment
 - **Particle Effects**: Explosions and visual feedback
 - **Smooth Animations**: Fluid movement and rotation
 - **Responsive Design**: Adapts to different screen sizes
@@ -160,7 +160,7 @@ This game uses Umami Analytics for privacy-focused visitor tracking:
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## 🙏 Acknowledgments
-- **Three.js** for the amazing 3D graphics library
+- **Three.js** for the amazing 2D graphics library
 - **Web Audio API** for immersive sound effects
 - **Heroku** for easy deployment platform
 

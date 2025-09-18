@@ -1,9 +1,18 @@
 {
-  "name": "space-shooter-three-js",
+  "name": "js-space-shooter",
   "version": "1.0.0",
-  "description": "A 3D Space Shooter game built with Three.js",
+  "description": "Classic 2D Space Shooter game built with WebGL & Vanilla JavaScript",
+  "author": "https://github.com/davidnekovarcz",
+  "license": "MIT",
   "type": "module",
   "main": "server.js",
+  "keywords": [
+    "space-shooter",
+    "game",
+    "2d",
+    "webgl",
+    "three-js"
+  ],
   "scripts": {
     "start": "node server.js",
     "dev": "python3 -m http.server 8000",
@@ -13,16 +22,6 @@
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
-  "keywords": [
-    "space-shooter",
-    "three.js",
-    "game",
-    "3d",
-    "webgl",
-    "javascript"
-  ],
-  "author": "David Nekovarcz",
-  "license": "MIT",
   "engines": {
     "node": "22.17.0",
     "npm": "10.x"
