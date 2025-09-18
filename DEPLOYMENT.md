@@ -20,9 +20,8 @@ git commit -m "Initial commit: Space Shooter game"
 
 ### 2. Create Heroku App
 ```bash
-heroku create space-shooter-xxx
+heroku create space-shooter-2d
 ```
-*Replace `xxx` with your preferred suffix*
 
 ### 3. Set Node.js Version
 The `package.json` already specifies Node.js 22.17.0, so Heroku will automatically use this version.
