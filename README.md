@@ -74,7 +74,7 @@ A thrilling 3D space shooter game built with Three.js! Pilot your spaceship thro
 
 ## 🌐 Live Demo
 - **Heroku**: [Play Space Shooter](https://space-shooter-2d.herokuapp.com/)
-- **GitHub**: [View Source Code](https://github.com/davidnekovarcz/space-shooter)
+- **GitHub**: [View Source Code](https://github.com/davidnekovarcz/js-space-shooter-2d)
 
 ## 📁 Project Structure
 ```
