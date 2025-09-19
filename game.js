@@ -254,7 +254,7 @@ class Game {
         
         // Random position on the edge of the screen
         const angle = Math.random() * Math.PI * 2;
-        const distance = 30;
+        const distance = 35; // Increased distance from center
         asteroid.position.x = Math.cos(angle) * distance;
         asteroid.position.y = Math.sin(angle) * distance;
         asteroid.position.z = 0;
@@ -453,7 +453,8 @@ class Game {
         // Check ship-asteroid collisions
         for (const asteroid of this.asteroids) {
             const distance = this.ship.position.distanceTo(asteroid.position);
-            if (distance < asteroid.geometry.parameters.radius + 1) {
+            const minDistance = asteroid.geometry.parameters.radius + 2; // Increased safety margin
+            if (distance < minDistance) {
                 this.endGame();
                 // Play game over sound
                 this.createGameOverSound();
