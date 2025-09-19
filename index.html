@@ -31,23 +31,24 @@
         
         /* Mobile Controls */
         #mobileControls {
-            position: absolute;
+            position: fixed;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            gap: 20px;
-            z-index: 100;
+            gap: 15px;
+            z-index: 1000;
+            pointer-events: auto;
         }
         
         .control-button {
-            width: 60px;
-            height: 60px;
-            border: none;
+            width: 50px;
+            height: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
             border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: rgba(0, 0, 0, 0.6);
             color: white;
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
             cursor: pointer;
             user-select: none;
@@ -56,26 +57,28 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background-color 0.1s;
+            transition: all 0.1s;
+            touch-action: manipulation;
         }
         
         .control-button:active {
-            background-color: rgba(255, 255, 255, 0.4);
+            background-color: rgba(255, 255, 255, 0.8);
+            transform: scale(0.95);
         }
         
         .control-button.shoot {
-            background-color: rgba(255, 0, 0, 0.3);
+            background-color: rgba(255, 0, 0, 0.6);
+            border-color: rgba(255, 0, 0, 0.8);
         }
         
         .control-button.shoot:active {
-            background-color: rgba(255, 0, 0, 0.5);
+            background-color: rgba(255, 0, 0, 0.8);
+            transform: scale(0.95);
         }
         
-        /* Hide controls on desktop */
-        @media (min-width: 768px) {
-            #mobileControls {
-                display: none;
-            }
+        /* Show controls on all devices for testing */
+        #mobileControls {
+            display: flex !important;
         }
     </style>
     <script defer src="https://cloud.umami.is/script.js" data-website-id="83e255ad-387c-4a7d-90af-8b5787fc38bb"></script>
