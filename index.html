@@ -28,6 +28,55 @@
             font-family: Arial, sans-serif;
             text-align: center;
         }
+        
+        /* Mobile Controls */
+        #mobileControls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 100;
+        }
+        
+        .control-button {
+            width: 60px;
+            height: 60px;
+            border: none;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.1s;
+        }
+        
+        .control-button:active {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .control-button.shoot {
+            background-color: rgba(255, 0, 0, 0.3);
+        }
+        
+        .control-button.shoot:active {
+            background-color: rgba(255, 0, 0, 0.5);
+        }
+        
+        /* Hide controls on desktop */
+        @media (min-width: 768px) {
+            #mobileControls {
+                display: none;
+            }
+        }
     </style>
     <script defer src="https://cloud.umami.is/script.js" data-website-id="83e255ad-387c-4a7d-90af-8b5787fc38bb"></script>
 </head>
@@ -36,6 +85,15 @@
     <div id="gameOver">
         Game Over!<br>
         Press SPACE to restart
+    </div>
+    
+    <!-- Mobile Controls -->
+    <div id="mobileControls">
+        <button class="control-button" id="leftBtn">←</button>
+        <button class="control-button" id="rightBtn">→</button>
+        <button class="control-button" id="upBtn">↑</button>
+        <button class="control-button" id="downBtn">↓</button>
+        <button class="control-button shoot" id="shootBtn">💥</button>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="game.js"></script>

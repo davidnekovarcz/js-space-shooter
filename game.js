@@ -93,6 +93,9 @@ class Game {
         window.addEventListener('keyup', (e) => this.keys[e.key] = false);
         window.addEventListener('resize', () => this.onWindowResize());
         
+        // Mobile controls
+        this.setupMobileControls();
+        
         // Start game
         this.init();
     }
@@ -106,6 +109,111 @@ class Game {
         
         // Spawn initial asteroids
         this.spawnLevelAsteroids();
+    }
+
+    setupMobileControls() {
+        // Get mobile control buttons
+        const leftBtn = document.getElementById('leftBtn');
+        const rightBtn = document.getElementById('rightBtn');
+        const upBtn = document.getElementById('upBtn');
+        const downBtn = document.getElementById('downBtn');
+        const shootBtn = document.getElementById('shootBtn');
+
+        // Add touch event listeners for movement
+        if (leftBtn) {
+            leftBtn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                this.keys['ArrowLeft'] = true;
+            });
+            leftBtn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                this.keys['ArrowLeft'] = false;
+            });
+            leftBtn.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                this.keys['ArrowLeft'] = true;
+            });
+            leftBtn.addEventListener('mouseup', (e) => {
+                e.preventDefault();
+                this.keys['ArrowLeft'] = false;
+            });
+        }
+
+        if (rightBtn) {
+            rightBtn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                this.keys['ArrowRight'] = true;
+            });
+            rightBtn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                this.keys['ArrowRight'] = false;
+            });
+            rightBtn.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                this.keys['ArrowRight'] = true;
+            });
+            rightBtn.addEventListener('mouseup', (e) => {
+                e.preventDefault();
+                this.keys['ArrowRight'] = false;
+            });
+        }
+
+        if (upBtn) {
+            upBtn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                this.keys['ArrowUp'] = true;
+            });
+            upBtn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                this.keys['ArrowUp'] = false;
+            });
+            upBtn.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                this.keys['ArrowUp'] = true;
+            });
+            upBtn.addEventListener('mouseup', (e) => {
+                e.preventDefault();
+                this.keys['ArrowUp'] = false;
+            });
+        }
+
+        if (downBtn) {
+            downBtn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                this.keys['ArrowDown'] = true;
+            });
+            downBtn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                this.keys['ArrowDown'] = false;
+            });
+            downBtn.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                this.keys['ArrowDown'] = true;
+            });
+            downBtn.addEventListener('mouseup', (e) => {
+                e.preventDefault();
+                this.keys['ArrowDown'] = false;
+            });
+        }
+
+        if (shootBtn) {
+            shootBtn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                if (!this.isGameOver) {
+                    this.shoot();
+                } else {
+                    this.restart();
+                }
+            });
+            shootBtn.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                if (!this.isGameOver) {
+                    this.shoot();
+                } else {
+                    this.restart();
+                }
+            });
+        }
     }
 
     createShip() {
