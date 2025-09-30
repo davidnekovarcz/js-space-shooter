@@ -41,10 +41,13 @@ class Game {
         this.explosions = [];
         this.keys = {};
         this.score = 0;
-        this.level = 0;
+        this.level = 1;
         this.isGameOver = false;
         this.lastShot = 0;  // Track last shot time
         this.shootCooldown = 100; // 10 shots per second (1000ms / 10)
+        this.playCount = 0;
+        this.totalShots = 0;
+        this.totalAsteroidsDestroyed = 0;
         
         // Store view size for calculations
         this.viewSize = viewSize;
@@ -100,9 +103,22 @@ class Game {
         this.init();
     }
 
+    trackEvent(eventName, parameters = {}) {
+        if (typeof window !== 'undefined' && window.trackEvent) {
+            window.trackEvent(eventName, parameters);
+        }
+    }
+
     init() {
         // Create ship
         this.createShip();
+
+        // Track game start
+        this.trackEvent('game_start', {
+            game_id: 'space_shooter',
+            game_name: 'Space Shooter',
+            event_category: 'game_interaction'
+        });
 
         // Start game loop
         this.gameLoop = requestAnimationFrame(() => this.update());
@@ -202,6 +218,15 @@ class Game {
                 if (!this.isGameOver) {
                     this.shoot();
                 } else {
+                    // Track mobile restart
+                    this.playCount++;
+                    this.trackEvent('game_restart', {
+                        game_id: 'space_shooter',
+                        game_name: 'Space Shooter',
+                        play_count: this.playCount,
+                        restart_method: 'mobile_tap',
+                        event_category: 'game_interaction'
+                    });
                     this.restart();
                 }
             });
@@ -210,6 +235,15 @@ class Game {
                 if (!this.isGameOver) {
                     this.shoot();
                 } else {
+                    // Track mobile restart
+                    this.playCount++;
+                    this.trackEvent('game_restart', {
+                        game_id: 'space_shooter',
+                        game_name: 'Space Shooter',
+                        play_count: this.playCount,
+                        restart_method: 'mobile_click',
+                        event_category: 'game_interaction'
+                    });
                     this.restart();
                 }
             });
@@ -374,6 +408,15 @@ class Game {
 
     shoot() {
         this.bullets.push(this.createBullet());
+        this.totalShots++;
+        
+        // Track shot event
+        this.trackEvent('game_shoot', {
+            game_id: 'space_shooter',
+            game_name: 'Space Shooter',
+            total_shots: this.totalShots,
+            event_category: 'game_interaction'
+        });
     }
 
     spawnLevelAsteroids() {
@@ -444,7 +487,21 @@ class Game {
                     this.asteroids.splice(j, 1);
                     this.bullets.splice(i, 1);
                     this.score += Math.floor(100 / asteroid.geometry.parameters.radius);
+                    this.totalAsteroidsDestroyed++;
                     this.updateScore();
+                    
+                    // Track asteroid destroyed
+                    this.trackEvent('asteroid_destroyed', {
+                        game_id: 'space_shooter',
+                        game_name: 'Space Shooter',
+                        score: this.score,
+                        level: this.level,
+                        asteroids_destroyed: this.totalAsteroidsDestroyed,
+                        asteroid_size: asteroid.geometry.parameters.radius,
+                        points_earned: Math.floor(100 / asteroid.geometry.parameters.radius),
+                        event_category: 'game_interaction'
+                    });
+                    
                     break;
                 }
             }
@@ -545,6 +602,16 @@ class Game {
 
         // Check if all asteroids are destroyed
         if (this.asteroids.length === 0) {
+            // Track level completion
+            this.trackEvent('level_completed', {
+                game_id: 'space_shooter',
+                game_name: 'Space Shooter',
+                level: this.level,
+                score: this.score,
+                asteroids_destroyed: this.totalAsteroidsDestroyed,
+                event_category: 'game_interaction'
+            });
+            
             this.spawnLevelAsteroids();
         }
 
@@ -591,10 +658,33 @@ class Game {
     endGame() {
         this.isGameOver = true;
         this.gameOverElement.style.display = 'block';
+        
+        // Track game over
+        this.trackEvent('game_over', {
+            game_id: 'space_shooter',
+            game_name: 'Space Shooter',
+            final_score: this.score,
+            final_level: this.level,
+            total_shots: this.totalShots,
+            asteroids_destroyed: this.totalAsteroidsDestroyed,
+            accuracy: this.totalShots > 0 ? (this.totalAsteroidsDestroyed / this.totalShots * 100).toFixed(2) : 0,
+            event_category: 'game_interaction'
+        });
+        
         cancelAnimationFrame(this.gameLoop);
     }
 
     restart() {
+        // Track restart
+        this.playCount++;
+        this.trackEvent('game_restart', {
+            game_id: 'space_shooter',
+            game_name: 'Space Shooter',
+            play_count: this.playCount,
+            restart_method: 'keyboard',
+            event_category: 'game_interaction'
+        });
+        
         // Reset ship
         this.ship.position.set(0, 0, 0);
         this.ship.velocity.set(0, 0, 0);
@@ -604,6 +694,8 @@ class Game {
         this.isGameOver = false;
         this.score = 0;
         this.level = 1;
+        this.totalShots = 0;
+        this.totalAsteroidsDestroyed = 0;
         this.updateScore();
         this.updateLevel();
         this.gameOverElement.style.display = 'none';
