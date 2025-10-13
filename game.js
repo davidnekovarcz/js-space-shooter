@@ -1,5 +1,10 @@
 class Game {
     constructor() {
+        // Track game played on initialization
+        if (typeof trackGamePlayed === 'function') {
+            trackGamePlayed();
+        }
+        
         // Initialize Three.js scene
         this.scene = new THREE.Scene();
         
