@@ -726,8 +726,8 @@ class Game {
         // Reset game state
         this.isGameOver = false;
         this.score = 0;
-        this.level = 1;
-        this.maxLevel = 1;
+        this.level = 0;
+        this.maxLevel = 0;
         this.totalShots = 0;
         this.totalAsteroidsDestroyed = 0;
         this.updateScore();
