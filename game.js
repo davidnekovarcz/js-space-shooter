@@ -44,14 +44,14 @@ class Game {
         this.explosions = [];
         this.keys = {};
         this.score = 0;
-        this.level = 1;
+        this.level = 0;
         this.isGameOver = false;
         this.lastShot = 0;  // Track last shot time
         this.shootCooldown = 100; // 10 shots per second (1000ms / 10)
         this.playCount = 0;
         this.totalShots = 0;
         this.totalAsteroidsDestroyed = 0;
-        this.maxLevel = 1;
+        this.maxLevel = 0;
         
         // Store view size for calculations
         this.viewSize = viewSize;
@@ -443,6 +443,15 @@ class Game {
     }
 
     spawnLevelAsteroids() {
+        // Increase level when spawning a new wave
+        this.level++;
+        this.maxLevel = Math.max(this.maxLevel, this.level);
+        
+        // Track max level achievement
+        if (this.trackMaxLevel) {
+            this.trackMaxLevel(this.maxLevel);
+        }
+        
         // Spawn 4 asteroids for the first level, add one more for each subsequent level
         const numAsteroids = Math.min(4 + (this.level - 1), 8);
         for (let i = 0; i < numAsteroids; i++) {
@@ -635,14 +644,6 @@ class Game {
             });
             
             // Advance to next level
-            this.level++;
-            this.maxLevel = Math.max(this.maxLevel, this.level);
-            
-            // Track max level achievement
-            if (this.trackMaxLevel) {
-                this.trackMaxLevel(this.maxLevel);
-            }
-            
             this.spawnLevelAsteroids();
         }
 
