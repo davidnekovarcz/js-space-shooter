@@ -1,8 +1,14 @@
 /**
  * Game Analytics Utilities for Space Shooter
  * 
- * Tracks game play events and maintains play counts in localStorage
+ * Tracks game play events and maintains play counts in localStorage + Firebase
  */
+
+import { 
+  initializeFirebaseAuth, 
+  syncGameStatsWithFirebase, 
+  trackFirebaseEvent
+} from './firebase.js';
 
 const STORAGE_KEY = 'playful_game_stats';
 const GAME_NAME = 'Space Shooter';
@@ -38,8 +44,9 @@ function saveGameStats(stats) {
 /**
  * Track when a game is played
  * Increments play count and updates timestamps
+ * Syncs with Firebase automatically
  */
-function trackGamePlayed() {
+export async function trackGamePlayed() {
   const stats = getGameStats();
   const now = new Date().toISOString();
   
@@ -73,6 +80,27 @@ function trackGamePlayed() {
       first_played: stats[GAME_NAME].firstPlayed,
       last_played: stats[GAME_NAME].lastPlayed
     });
+  }
+
+  // Track with Firebase Analytics
+  trackFirebaseEvent('play_game', {
+    game_name: GAME_NAME,
+    timestamp: now,
+    play_count: stats[GAME_NAME].playCount
+  });
+
+  trackFirebaseEvent('game_played_total', {
+    game_name: GAME_NAME,
+    play_count: stats[GAME_NAME].playCount,
+    first_played: stats[GAME_NAME].firstPlayed,
+    last_played: stats[GAME_NAME].lastPlayed
+  });
+
+  // Sync with Firebase (async, don't wait)
+  try {
+    await syncGameStatsWithFirebase();
+  } catch (error) {
+    console.error('Error syncing with Firebase:', error);
   }
 }
 

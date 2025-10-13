@@ -1,9 +1,7 @@
 class Game {
     constructor() {
-        // Track game played on initialization
-        if (typeof trackGamePlayed === 'function') {
-            trackGamePlayed();
-        }
+        // Initialize Firebase and track game played on initialization
+        this.initializeFirebaseAndTrack();
         
         // Initialize Three.js scene
         this.scene = new THREE.Scene();
@@ -56,6 +54,22 @@ class Game {
         
         // Store view size for calculations
         this.viewSize = viewSize;
+    }
+
+    async initializeFirebaseAndTrack() {
+        try {
+            // Import Firebase functions dynamically
+            const { initializeFirebaseAuth } = await import('./firebase.js');
+            const { trackGamePlayed } = await import('./analytics.js');
+            
+            // Initialize Firebase auth (creates anonymous user if needed)
+            await initializeFirebaseAuth();
+            
+            // Track game play
+            await trackGamePlayed();
+        } catch (error) {
+            console.error('Error initializing Firebase:', error);
+        }
         
         // UI elements
         this.scoreElement = document.getElementById('score');
