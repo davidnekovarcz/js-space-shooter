@@ -51,6 +51,7 @@ class Game {
         this.playCount = 0;
         this.totalShots = 0;
         this.totalAsteroidsDestroyed = 0;
+        this.maxLevel = 1;
         
         // Store view size for calculations
         this.viewSize = viewSize;
@@ -60,13 +61,16 @@ class Game {
         try {
             // Import Firebase functions dynamically
             const { initializeFirebaseAuth } = await import('./firebase.js');
-            const { trackGamePlayed } = await import('./analytics.js');
+            const { trackGamePlayed, trackMaxLevel } = await import('./analytics.js');
             
             // Initialize Firebase auth (creates anonymous user if needed)
             await initializeFirebaseAuth();
             
             // Track game play
             await trackGamePlayed();
+            
+            // Store trackMaxLevel function for later use
+            this.trackMaxLevel = trackMaxLevel;
         } catch (error) {
             console.error('Error initializing Firebase:', error);
         }
@@ -444,7 +448,6 @@ class Game {
         for (let i = 0; i < numAsteroids; i++) {
             this.asteroids.push(this.createAsteroid(3));
         }
-        this.level++;
         this.updateLevel();
     }
 
@@ -631,6 +634,15 @@ class Game {
                 event_category: 'game_interaction'
             });
             
+            // Advance to next level
+            this.level++;
+            this.maxLevel = Math.max(this.maxLevel, this.level);
+            
+            // Track max level achievement
+            if (this.trackMaxLevel) {
+                this.trackMaxLevel(this.maxLevel);
+            }
+            
             this.spawnLevelAsteroids();
         }
 
@@ -684,6 +696,7 @@ class Game {
             game_name: 'Space Shooter',
             final_score: this.score,
             final_level: this.level,
+            max_level: this.maxLevel,
             total_shots: this.totalShots,
             asteroids_destroyed: this.totalAsteroidsDestroyed,
             accuracy: this.totalShots > 0 ? (this.totalAsteroidsDestroyed / this.totalShots * 100).toFixed(2) : 0,
@@ -713,6 +726,7 @@ class Game {
         this.isGameOver = false;
         this.score = 0;
         this.level = 1;
+        this.maxLevel = 1;
         this.totalShots = 0;
         this.totalAsteroidsDestroyed = 0;
         this.updateScore();

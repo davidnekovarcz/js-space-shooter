@@ -59,7 +59,8 @@ export async function trackGamePlayed() {
     stats[GAME_NAME] = {
       playCount: 1,
       lastPlayed: now,
-      firstPlayed: now
+      firstPlayed: now,
+      maxLevel: 1
     };
   }
   
@@ -105,10 +106,60 @@ export async function trackGamePlayed() {
 }
 
 /**
+ * Track max level achieved
+ * Updates max level in localStorage and Firebase
+ */
+export async function trackMaxLevel(level) {
+  const stats = getGameStats();
+  const now = new Date().toISOString();
+  
+  if (stats[GAME_NAME]) {
+    // Update max level if this is higher
+    if (level > (stats[GAME_NAME].maxLevel || 1)) {
+      stats[GAME_NAME].maxLevel = level;
+      stats[GAME_NAME].lastPlayed = now;
+      
+      saveGameStats(stats);
+      
+      // Track with Google Analytics / GTM
+      if (typeof window !== 'undefined' && window.trackEvent) {
+        window.trackEvent('max_level_achieved', {
+          game_name: GAME_NAME,
+          max_level: level,
+          timestamp: now
+        });
+      }
+      
+      // Track with Firebase Analytics
+      trackFirebaseEvent('max_level_achieved', {
+        game_name: GAME_NAME,
+        max_level: level,
+        timestamp: now
+      });
+      
+      // Sync with Firebase (async, don't wait)
+      try {
+        await syncGameStatsWithFirebase();
+      } catch (error) {
+        console.error('Error syncing with Firebase:', error);
+      }
+    }
+  }
+}
+
+/**
  * Get play count for this game
  */
 function getGamePlayCount() {
   const stats = getGameStats();
   return stats[GAME_NAME]?.playCount || 0;
+}
+
+/**
+ * Get max level for this game
+ */
+export function getMaxLevel() {
+  const stats = getGameStats();
+  return stats[GAME_NAME]?.maxLevel || 1;
 }
 
