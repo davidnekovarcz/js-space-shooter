@@ -704,6 +704,18 @@ class Game {
             event_category: 'game_interaction'
         });
         
+        // Send game over message to parent iframe
+        if (window.parent && window.parent !== window) {
+            window.parent.postMessage({
+                type: 'GAME_OVER',
+                gameName: 'Space Shooter',
+                score: this.maxLevel, // Use max level as the score for leaderboard
+                level: this.maxLevel,
+                finalScore: this.score,
+                asteroidsDestroyed: this.totalAsteroidsDestroyed
+            }, '*');
+        }
+        
         cancelAnimationFrame(this.gameLoop);
     }
 
